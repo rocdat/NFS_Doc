@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Jingchang Shi" />
+  <meta name="date" content="2019-04-16" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.4/tufte.min.css"/> -->
+
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/envisioned.css"/>
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/tablesaw-stackonly.css"/>
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/nudge.css"/> <!-- if you want navigation -->
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/jquery.js"></script>
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/tablesaw-stackonly.js"></script>
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/nudge.min.js"></script> <!-- if you want navigation -->
+
+<script type="text/javascript" async
+    src='http://cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
+</script>
+<link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
+<title>Compile GFR</title>
+<style>
+
+p, footer, pre.code, div.table-wrapper {
+    width: 100%;
+}
+
+code {
+  white-space: pre-wrap;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 66.7%;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+.caption {
+  text-align: center;
+}
+
+<!-- blockquote { -->
+  <!-- border-left: 3px solid darkgray; -->
+  <!-- padding-left: 10px; -->
+<!-- } -->
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 40%;
+}
+
+.column img {
+  width: 100%;
+}
+
+table{
+  border: 2px solid #FFFFFF;
+  width: 92%;
+  text-align: center;
+}
+table td, table.greyGridTable th {
+  border: 1px solid #FFFFFF;
+  padding: 3px 4px;
+}
+table tbody td {
+}
+table tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table thead {
+  background: #FFFFFF;
+  border-bottom: 4px solid #333333;
+}
+table thead th {
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  border-left: 2px solid #333333;
+}
+table thead th:first-child {
+  border-left: none;
+}
+
+table tfoot td {
+}
+
+</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Compile GFR</h1>
+    <h2 class="author">Jingchang Shi</h2>
+<h3 class="date">2019-04-16</h3>
+<div id="TOC">
+<ul>
+<li><a href="#compile-contrib"><span class="toc-section-number">1</span> Compile Contrib</a><ul>
+<li><a href="#file-structure"><span class="toc-section-number">1.1</span> File Structure</a></li>
+<li><a href="#metis"><span class="toc-section-number">1.2</span> Metis</a></li>
+<li><a href="#hdf5"><span class="toc-section-number">1.3</span> HDF5</a></li>
+<li><a href="#cgns"><span class="toc-section-number">1.4</span> CGNS</a></li>
+</ul></li>
+<li><a href="#compile-gfr"><span class="toc-section-number">2</span> Compile GFR</a></li>
+<li><a href="#run-gfr"><span class="toc-section-number">3</span> Run GFR</a></li>
+</ul>
+</div>
+<div id="wrapper">
+<hr />
+<h1 id="compile-contrib"><span class="header-section-number">1</span> Compile Contrib</h1>
+<p>The original instructions from GFR say that we need to download and compile the following packages.</p>
+<ul>
+<li>metis-5.1.0.tar.gz, <a href="http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz">link</a></li>
+<li>mpich-3.2.tar.gz, <a href="http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz">link</a></li>
+<li>hdf5-1.8.19.tar.gz, <a href="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.19/src/hdf5-1.8.19.tar.gz">link</a></li>
+<li>CGNS-3.3.0.tar.gz, <a href="https://github.com/CGNS/CGNS/archive/v3.3.0.tar.gz">link</a></li>
+</ul>
+<p>Here we compile only 3 of them, excluding mpich. Supercomputers like Tianhe-2 have their customized MPI environments. Using our own MPI will degrade the running speed.</p>
+<h2 id="file-structure"><span class="header-section-number">1.1</span> File Structure</h2>
+<pre><code>.
+├── contrib
+│   ├── cgns
+│   ├── hdf5
+│   └── metis
+├── contrib_src
+│   ├── cgns_src
+│   ├── hdf5_src
+│   └── metis_src
+└── GFR
+    ├── build
+    └── src</code></pre>
+<p>Before compiling the contrib packages, set the root dir.</p>
+<pre><code>export gfrdir=/home/jcshi/Documents/gfr_project</code></pre>
+<p>Also check your compilation environments.</p>
+<pre><code>jcshi@BigMachine:~/Documents/gfr_project$ which gcc
+/usr/bin/gcc
+jcshi@BigMachine:~/Documents/gfr_project$ gcc --version
+gcc (Ubuntu 7.3.0-27ubuntu1~18.04) 7.3.0
+Copyright (C) 2017 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+jcshi@BigMachine:~/Documents/gfr_project$ which mpicc
+/usr/bin/mpicc
+jcshi@BigMachine:~/Documents/gfr_project$ which mpif90
+/usr/bin/mpif90
+jcshi@BigMachine:~/Documents/gfr_project$ mpichversion 
+MPICH Version:      3.3a2
+MPICH Release date: Sun Nov 13 09:12:11 MST 2016
+MPICH Device:       ch3:nemesis
+MPICH configure:    --build=x86_64-linux-gnu --prefix=/usr --includedir=${prefix}/include --mandir=${prefix}/share/man --infodir=${prefix}/share/info --sysconfdir=/etc --localstatedir=/var --disable-silent-rules --libdir=${prefix}/lib/x86_64-linux-gnu --libexecdir=${prefix}/lib/x86_64-linux-gnu --disable-maintainer-mode --disable-dependency-tracking --with-libfabric --enable-shared --prefix=/usr --enable-fortran=all --disable-rpath --disable-wrapper-rpath --sysconfdir=/etc/mpich --libdir=/usr/lib/x86_64-linux-gnu --includedir=/usr/include/mpich --docdir=/usr/share/doc/mpich --with-hwloc-prefix=system --enable-checkpointing --with-hydra-ckpointlib=blcr CPPFLAGS= CFLAGS= CXXFLAGS= FFLAGS= FCFLAGS=
+MPICH CC:   gcc  -g -O2 -fdebug-prefix-map=/build/mpich-O9at2o/mpich-3.3~a2=. -fstack-protector-strong -Wformat -Werror=format-security  -O2
+MPICH CXX:  g++  -g -O2 -fdebug-prefix-map=/build/mpich-O9at2o/mpich-3.3~a2=. -fstack-protector-strong -Wformat -Werror=format-security -O2
+MPICH F77:  gfortran  -g -O2 -fdebug-prefix-map=/build/mpich-O9at2o/mpich-3.3~a2=. -fstack-protector-strong -O2
+MPICH FC:   gfortran  -g -O2 -fdebug-prefix-map=/build/mpich-O9at2o/mpich-3.3~a2=. -fstack-protector-strong -O2
+MPICH Custom Information:   </code></pre>
+<h2 id="metis"><span class="header-section-number">1.2</span> Metis</h2>
+<pre><code>cd ${gfrdir}/contrib_src
+wget http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz
+tar -xzvf metis-5.1.0.tar.gz
+cd metis-5.1.0
+make cc=gcc prefix=${gfrdir}/contrib/metis config
+make
+make install
+cd ${gfrdir}</code></pre>
+<h2 id="hdf5"><span class="header-section-number">1.3</span> HDF5</h2>
+<pre><code>cd ${gfrdir}/contrib_src
+wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.19/src/hdf5-1.8.19.tar.gz
+tar -xzvf hdf5-1.8.19.tar.gz
+cd hdf5-1.8.19
+mkdir -p build
+cd build
+cmake -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_PARALLEL:BOOL=ON -DCMAKE_INSTALL_PREFIX:STRING=${gfrdir}/contrib/hdf5 -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF  ..
+make
+make install
+cd ${gfrdir}</code></pre>
+<p>Here, the original instructions from GFR let you use the <code>configure</code> way of compiling applications. HDF5 officially offer 2 ways: <code>configure</code> way and <code>cmake</code> way. The <code>configure</code> way will not put the cmake files to the expected location thus cause an error of HDF5 package not found when using cmake configuring CGNS. So, we use the <code>cmake</code> way.</p>
+<h2 id="cgns"><span class="header-section-number">1.4</span> CGNS</h2>
+<pre><code>cd ${gfrdir}/contrib_src
+wget https://github.com/CGNS/CGNS/archive/v3.3.0.tar.gz
+mv v3.3.0.tar.gz CGNS-3.3.0.tar.gz
+tar -xzvf CGNS-3.3.0.tar.gz
+cd CGNS-3.3.0
+mkdir -p build
+cd build
+export HDF5_DIR=${gfrdir}/contrib/hdf5/share/cmake
+cmake -D CGNS_ENABLE_FORTRAN:BOOL=ON -D CGNS_ENABLE_HDF5:BOOL=ON -D HDF5_NEED_MPI:BOOL=ON -D CGNS_ENABLE_PARALLEL:BOOL=ON -D CMAKE_C_COMPILER:STRING=mpicc -D CMAKE_Fortran_COMPILER:STRING=mpif90 -D CMAKE_INSTALL_PREFIX:PATH=${gfrdir}/contrib/cgns ..
+cd src/tools/CMakeFiles/cgnscheck.dir &amp;&amp; awk &#39;{$NF=$NF&quot; -lhdf5&quot;; print}&#39; link.txt &gt; link &amp;&amp; mv link link.txt &amp;&amp; cd -
+cd src/tools/CMakeFiles/cgnscompress.dir &amp;&amp; awk &#39;{$NF=$NF&quot; -lhdf5&quot;; print}&#39; link.txt &gt; link &amp;&amp; mv link link.txt &amp;&amp; cd -
+cd src/tools/CMakeFiles/cgnsconvert.dir &amp;&amp; awk &#39;{$NF=$NF&quot; -lhdf5&quot;; print}&#39; link.txt &gt; link &amp;&amp; mv link link.txt &amp;&amp; cd -
+cd src/tools/CMakeFiles/cgnsdiff.dir &amp;&amp; awk &#39;{$NF=$NF&quot; -lhdf5&quot;; print}&#39; link.txt &gt; link &amp;&amp; mv link link.txt &amp;&amp; cd -
+cd src/tools/CMakeFiles/cgnslist.dir &amp;&amp; awk &#39;{$NF=$NF&quot; -lhdf5&quot;; print}&#39; link.txt &gt; link &amp;&amp; mv link link.txt &amp;&amp; cd -
+export LIBRARY_PATH=${gfrdir}/contrib/hdf5/lib
+make
+make install
+cd ${gfrdir}</code></pre>
+<p>In the above shell operations, the files <code>link.txt</code> are appended with <code>-lhdf5</code> to resolve the issue of <code>unreferenced link to H5 functions</code> when linking those CGNS tools. In fact, at that stage, the static and shared library of CGNS are already compiled successfully.</p>
+<p>Also, the linking process requires HDF5 lib directory to be known to CGNS. Thus we <code>export LIBRARY_PATH</code>. Not sure why libhdf5 is still not found when CMake already finds where HDF5 locates.</p>
+<h1 id="compile-gfr"><span class="header-section-number">2</span> Compile GFR</h1>
+<p>The environments are set up in the <code>*.mk</code> files.</p>
+<pre><code>cd ${gfrdir}/GFR/build
+make</code></pre>
+<p>Now, <code>debug_gfr</code> and <code>gfr</code> will be put in <code>${gfrdir}/GFR/build/bin</code>.</p>
+<h1 id="run-gfr"><span class="header-section-number">3</span> Run GFR</h1>
+<p>Each time running GFR, you have to set up the lib search path.</p>
+<pre><code>export gfrdir=/home/jcshi/Documents/gfr_project
+export LD_LIBRARY_PATH=${gfrdir}/contrib/metis/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${gfrdir}/contrib/hdf5/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${gfrdir}/contrib/cgns/lib:$LD_LIBRARY_PATH</code></pre>
+<p>Then you can run GFR in the serial mode or parallel mode.</p>
+</div>
+</body>
+</html>
