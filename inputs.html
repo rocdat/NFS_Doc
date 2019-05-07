@@ -6,26 +6,41 @@
   <meta name="generator" content="pandoc" />
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.4/tufte.min.css"/> -->
 
-<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/envisioned.css"/>
-<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/tablesaw-stackonly.css"/>
-<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/nudge.css"/> <!-- if you want navigation -->
-<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/jquery.js"></script>
-<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/tablesaw-stackonly.js"></script>
-<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/nudge.min.js"></script> <!-- if you want navigation -->
+<link rel="stylesheet" href="https://desperadoshi.github.io/doc/static/envisioned-css/css/envisioned.css"/>
+<link rel="stylesheet" href="https://desperadoshi.github.io/doc/static/envisioned-css/css/tablesaw-stackonly.css"/>
+<link rel="stylesheet" href="https://desperadoshi.github.io/doc/static/envisioned-css/css/nudge.css"/> <!-- if you want navigation -->
+<script src="https://desperadoshi.github.io/doc/static/envisioned-css/js/jquery.js"></script>
+<script src="https://desperadoshi.github.io/doc/static/envisioned-css/js/tablesaw-stackonly.js"></script>
+<script src="https://desperadoshi.github.io/doc/static/envisioned-css/js/nudge.min.js"></script> <!-- if you want navigation -->
 
 <script type="text/javascript" async
-    src='http://cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
+    src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
 </script>
 <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
 <title>Input File Description</title>
 <style>
+<!-- table { -->
+  <!-- border-top: 2px solid #111; -->
+  <!-- border-bottom: 2px solid #111; -->
+  <!-- font-size: 1.1rem; -->
+<!-- } -->
+
+<!-- th { -->
+  <!-- border-bottom: 1px solid #111; -->
+<!-- } -->
+
+<!-- pre { -->
+  <!-- overflow-x: auto; -->
+  <!-- background-color: #fafafa; -->
+  <!-- padding: 1rem; -->
+  <!-- text-align: left; -->
+<!-- } -->
+<!-- code { -->
+  <!-- font-family: 'Share Tech Mono', monospace; -->
+<!-- } -->
 
 p, footer, pre.code, div.table-wrapper {
     width: 100%;
-}
-
-code {
-  white-space: pre-wrap;
 }
 
 img {
@@ -60,37 +75,6 @@ ul {
   width: 100%;
 }
 
-table{
-  border: 2px solid #FFFFFF;
-  width: 92%;
-  text-align: center;
-}
-table td, table.greyGridTable th {
-  border: 1px solid #FFFFFF;
-  padding: 3px 4px;
-}
-table tbody td {
-}
-table tr:nth-child(even) {
-  background: #D0E4F5;
-}
-table thead {
-  background: #FFFFFF;
-  border-bottom: 4px solid #333333;
-}
-table thead th {
-  font-weight: bold;
-  color: #333333;
-  text-align: center;
-  border-left: 2px solid #333333;
-}
-table thead th:first-child {
-  border-left: none;
-}
-
-table tfoot td {
-}
-
 </style>
 </head>
 <body>
@@ -113,7 +97,7 @@ table tfoot td {
 </div>
 <div id="wrapper">
 <h1 id="grid-file"><span class="header-section-number">1</span> Grid File</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -155,7 +139,7 @@ table tfoot td {
 </tbody>
 </table>
 <h1 id="physics-and-equations"><span class="header-section-number">2</span> Physics and Equations</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -281,7 +265,7 @@ table tfoot td {
 </tbody>
 </table>
 <h1 id="base-fr-configuration"><span class="header-section-number">3</span> Base FR Configuration</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -330,7 +314,7 @@ table tfoot td {
 </tbody>
 </table>
 <h1 id="time-scheme"><span class="header-section-number">4</span> Time Scheme</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -393,7 +377,7 @@ table tfoot td {
 </tbody>
 </table>
 <h1 id="initialization"><span class="header-section-number">5</span> Initialization</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -450,7 +434,7 @@ table tfoot td {
 </table>
 <h1 id="boundary-conditions"><span class="header-section-number">6</span> Boundary Conditions</h1>
 <h2 id="base"><span class="header-section-number">6.1</span> Base</h2>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -597,7 +581,7 @@ table tfoot td {
 </tbody>
 </table>
 <h2 id="custom-profile"><span class="header-section-number">6.2</span> Custom Profile</h2>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -646,7 +630,7 @@ table tfoot td {
 </tbody>
 </table>
 <h2 id="inflow-turbulence-generation"><span class="header-section-number">6.3</span> Inflow Turbulence Generation</h2>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
@@ -744,7 +728,7 @@ table tfoot td {
 </tbody>
 </table>
 <h1 id="solution"><span class="header-section-number">7</span> Solution</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="12%" />
 <col width="11%" />
