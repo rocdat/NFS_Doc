@@ -480,7 +480,7 @@ table tfoot td {
 <td align="center"><code>character(len=32)</code></td>
 <td align="center"><code>&quot;&quot;</code></td>
 <td align="center">\</td>
-<td align="left">Character string that matches the name of a boundary group in the grid file. <br> <span style="color:blue">NOTE</span>: Case (upper/lower-case) does NOT matter.</td>
+<td align="left">Character string that matches the name of a boundary group in the grid file. <br> <span style="color:blue">NOTE</span>: Case (upper/lower-case) does NOT matter. For the periodic BC, in the GMSH grid file, the user has to specify which face group pairs which one. For example, the face group no.4 is named <code>Periodic-1</code> and it pairs face group no.5. So the face group no.5 must be named <code>Periodic-2</code>. In the meantime, another periodic face group pair is named <code>Periodic-3</code> and <code>Periodic-4</code>. The ending number is used to pair face groups.</td>
 </tr>
 <tr class="odd">
 <td align="center"><code>bc_input(1)%bc_type_string</code></td>
