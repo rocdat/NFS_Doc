@@ -497,3 +497,8 @@
      interp(:)%toFace as well. For example, look at InterpToFace_Hexa and
      CorrectionMatrix_Hexa.
 
+* The flow initialization feature is based on the BC. It takes values from
+  the corresponding BC. Should we decouple the init function with BC to allow
+  more freedom of initializing flow?
+  2019-04-17, 21:36:52, Jingchang Shi
+

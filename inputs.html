@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.4/tufte.min.css"/> -->
+
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/envisioned.css"/>
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/tablesaw-stackonly.css"/>
+<link rel="stylesheet" href="/home/jcshi/software_profile/pandoc/envisioned-css/css/nudge.css"/> <!-- if you want navigation -->
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/jquery.js"></script>
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/tablesaw-stackonly.js"></script>
+<script src="/home/jcshi/software_profile/pandoc/envisioned-css/js/nudge.min.js"></script> <!-- if you want navigation -->
+
+<script type="text/javascript" async
+    src='http://cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
+</script>
+<link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
+<title>Input File Description</title>
+<style>
+
+p, footer, pre.code, div.table-wrapper {
+    width: 100%;
+}
+
+code {
+  white-space: pre-wrap;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 66.7%;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+.caption {
+  text-align: center;
+}
+
+<!-- blockquote { -->
+  <!-- border-left: 3px solid darkgray; -->
+  <!-- padding-left: 10px; -->
+<!-- } -->
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 40%;
+}
+
+.column img {
+  width: 100%;
+}
+
+table{
+  border: 2px solid #FFFFFF;
+  width: 92%;
+  text-align: center;
+}
+table td, table.greyGridTable th {
+  border: 1px solid #FFFFFF;
+  padding: 3px 4px;
+}
+table tbody td {
+}
+table tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table thead {
+  background: #FFFFFF;
+  border-bottom: 4px solid #333333;
+}
+table thead th {
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  border-left: 2px solid #333333;
+}
+table thead th:first-child {
+  border-left: none;
+}
+
+table tfoot td {
+}
+
+</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Input File Description</h1>
+    <div id="TOC">
+<ul>
+<li><a href="#grid-file"><span class="toc-section-number">1</span> Grid File</a></li>
+<li><a href="#physics-and-equations"><span class="toc-section-number">2</span> Physics and Equations</a></li>
+<li><a href="#base-fr-configuration"><span class="toc-section-number">3</span> Base FR Configuration</a></li>
+<li><a href="#time-scheme"><span class="toc-section-number">4</span> Time Scheme</a></li>
+<li><a href="#initialization"><span class="toc-section-number">5</span> Initialization</a></li>
+<li><a href="#boundary-conditions"><span class="toc-section-number">6</span> Boundary Conditions</a><ul>
+<li><a href="#base"><span class="toc-section-number">6.1</span> Base</a></li>
+<li><a href="#custom-profile"><span class="toc-section-number">6.2</span> Custom Profile</a></li>
+<li><a href="#inflow-turbulence-generation"><span class="toc-section-number">6.3</span> Inflow Turbulence Generation</a></li>
+</ul></li>
+<li><a href="#solution"><span class="toc-section-number">7</span> Solution</a></li>
+</ul>
+</div>
+<div id="wrapper">
+<h1 id="grid-file"><span class="header-section-number">1</span> Grid File</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>grid_format</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the format of the input grid file. <br> <span class="math inline">\(\bullet\)</span> <code>1 := GMSH</code> <br> <span class="math inline">\(\bullet\)</span> <code>2 := CGNS</code></td>
+</tr>
+<tr class="even">
+<td align="center"><code>gridfile</code></td>
+<td align="center"><code>character(len=150)</code></td>
+<td align="center">&quot;&quot;</td>
+<td align="center">\</td>
+<td align="left">File path to the input grid file relative to the current directory.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>metis_option</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>3</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the METIS partitioning algorithm to use for partitioning the global grid. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Create non-weighted partitions based on a multilevel recursive bisection while minimizing the edge cut. For grids with origanized all quad or hex cells, I recommend this option. <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Create non-weighted partitions based on a multilevel kway algorithm while minimizing the edge cut. <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> Create non-weighted partitions based on a multilevel kway algorithm while minimizing the total communication volume. <br> <span class="math inline">\(\bullet\)</span> <code>4 :=</code> Create weighted partitions based on a multilevel k-way algorithm while minimizing the total communication volume (weighting is not yet implemented so this is currently the same as option 3).</td>
+</tr>
+</tbody>
+</table>
+<h1 id="physics-and-equations"><span class="header-section-number">2</span> Physics and Equations</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>governing_equations</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>2</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the governing equations to use. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Euler equations <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Navier-Stokes equations</td>
+</tr>
+<tr class="even">
+<td align="center"><code>machref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.4</code></td>
+<td align="center">\</td>
+<td align="left">Reference Mach number.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>gam</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1.4</code></td>
+<td align="center">\</td>
+<td align="left">Reference <span class="math inline">\(\gamma\)</span> (ratio of specific heats).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>ptotref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference total pressure (units of Pa).</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>ttotref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference total temperature (units of Kelvin).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>rhoref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference static density (default evaluates to <span class="math inline">\(1.160833 kg/m^3\)</span> )</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>300.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference static temperature (units of Kelvin).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>pref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1E5</code></td>
+<td align="center">\</td>
+<td align="left">Reference static pressure (units of Pa).</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>rgasref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>287.15</code></td>
+<td align="center">\</td>
+<td align="left">Reference gas constant (units of <span class="math inline">\(m^2/(s^2 K)\)</span> ).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>alpha_aoaref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference angle of attack in the <span class="math inline">\(x-y\)</span> plane.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>beta_aoaref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Reference angle of attack in the <span class="math inline">\(x-z\)</span> plane.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>Pr</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.72</code></td>
+<td align="center">\</td>
+<td align="left">Laminar Prandtl number.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>suth_muref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1.716E-5</code></td>
+<td align="center">\</td>
+<td align="left">Constant <span class="math inline">\(\mu_0\)</span> in Sutherland’s law.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>suth_Tref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>273.0</code></td>
+<td align="center">\</td>
+<td align="left">Constant <span class="math inline">\(T_0\)</span> in Sutherland’s law.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>suth_Sref</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>110.4</code></td>
+<td align="center">\</td>
+<td align="left">Constant <span class="math inline">\(S\)</span> in Sutherland’s law.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="base-fr-configuration"><span class="header-section-number">3</span> Base FR Configuration</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>solution_order</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>3</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the degree of the polynomial space, <span class="math inline">\(\mathcal{P_S}\)</span>, to use for the solution. <br> <span style="color:blue">NOTE</span>: The order-of-accuracy is approximately <span class="math inline">\(\mathcal{P_S}+1\)</span>.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>loc_solution_pts</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the location of the solution points used for tensor products. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Legendre-Gauss nodes. <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Legendre-Gauss-Lobatto nodes.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>invs_flux_method</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the approximate Riemann solver used to compute the common inviscid fluxes at the interfaces. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Roe flux with entropy fix <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> HLLC flux <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> LDFSS flux <br> <span class="math inline">\(\bullet\)</span> <code>4 :=</code> Rotated-Roe-HLL flux</td>
+</tr>
+<tr class="even">
+<td align="center"><code>visc_flux_method</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>2</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the method used to compute the common viscous fluxes at the interfaces. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Bassi-Rebay 1 (BR1) (<span style="color:red">WARNING</span>: high chances of stability issues) <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Bassi-Rebay 2 (BR2) <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> Local DG (LDG) (smaller CFL limit than BR2)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="time-scheme"><span class="header-section-number">4</span> Time Scheme</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>Runge_Kutta_Scheme</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>3</code></td>
+<td align="center">\</td>
+<td align="left">Specifies which Runge-Kutta method to use. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Classic n-stage RK method <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> 2-stage/2nd-order SSP-RK method <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> 3-stage/3rd-order SSP-RK method <br> <span class="math inline">\(\bullet\)</span> <code>4 :=</code> 5-stage/4th-order SSP-RK method <br> <span class="math inline">\(\bullet\)</span> <code>5 :=</code> 5-stage/4th-order Carpenter-Kennedy low storage RK method</td>
+</tr>
+<tr class="even">
+<td align="center"><code>num_timesteps</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>25000</code></td>
+<td align="center">\</td>
+<td align="left">Number of time steps for the simulation.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>Final_Time</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>10.0</code></td>
+<td align="center">\</td>
+<td align="left">Stop when the time within the simulation reaches this value.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>Timestep_Type</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Type of time stepping to use for the simulation. <br> <span class="math inline">\(\bullet\)</span> <code>0 :=</code> Constant global time step. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> global time step from minimum computed cell time step. <br> <span class="math inline">\(\bullet\)</span> <code>-1 :=</code> local time stepping within each cell from computed cell time step. <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> global time step from minimum computed solution point time step. (EXPERIMENTAL) <br> <span class="math inline">\(\bullet\)</span> <code>-2 :=</code> local time stepping at each solution point from compute solution point time step. (EXPERIMENTAL)</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>constant_dt</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1E-6</code></td>
+<td align="center">\</td>
+<td align="left">Size of the time step that is used when Timestep Type is set to a constant global time step.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>CFL</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.1</code></td>
+<td align="center">\</td>
+<td align="left">Analogous to the CFL condition, this is used to scale the time step size to get a maximum stable time step. The maximum value this can be while also keeping a simulation stable is very dependent on the simulation/flow-conditions and input settings, and experimentation is generally required to find a good value. A lower value is more likely to keep a simulation stable, but it will require more time steps to reach either convergence or a given simulation time. Typical values are <span class="math inline">\(0.1 \leq CFL \leq 2\)</span>, but past experience has found simulations that were stable with values up to 7.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="initialization"><span class="header-section-number">5</span> Initialization</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>itestcase</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the test-case/problem to solve, primarily affecting the initialization of the simulation. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Generic flow, initialize to reference conditions. <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Diagonally propagating Shu version of the isentropic Euler vortex. <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> Channel flow (not working)</td>
+</tr>
+<tr class="even">
+<td align="center"><code>load_restart_file</code></td>
+<td align="center"><code>logical</code></td>
+<td align="center"><code>.FALSE.</code></td>
+<td align="center">\</td>
+<td align="left">Logical flag used to indicate whether or not to read in a restart file.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>restart_file</code></td>
+<td align="center"><code>character(len=150)</code></td>
+<td align="center"><code>out.rst</code></td>
+<td align="center">\</td>
+<td align="left">File path to the solution restart file that will be read if <code>load_restart_file</code> is true.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>restart_interval</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">Number of time steps between writing restart files. <br> <span style="color:blue">NOTE</span>: A restart file is always written after completing the last time step.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tiem_ave_file</code></td>
+<td align="center"><code>character(len=150)</code></td>
+<td align="center"><code>out.ave</code></td>
+<td align="center">\</td>
+<td align="left">File path to the time-averaged solution restart file that will be read in if <code>load_restart_file</code> and <code>output_time_averaging</code> are both true. The code will add the accumulation of time-averaged flow variables from the new running simulation to the time-averaged flow variables of the previous simulation from which the new simulation restarted.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="boundary-conditions"><span class="header-section-number">6</span> Boundary Conditions</h1>
+<h2 id="base"><span class="header-section-number">6.1</span> Base</h2>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>bc_input</code></td>
+<td align="center"><code>bc_input_t</code></td>
+<td align="center">\</td>
+<td align="center">\</td>
+<td align="left">Derived type to specify boundary conditions. An iterative loop will go through the specified flow conditions and try to compute the remaining unspecified flow conditions. <br> <span style="color:blue">NOTE</span>: A run-time error will occur if either of the following conditions are true: <br> A) The flow conditions are over-specified and inconsistent <br> B) The flow conditions are under-specified and it is unable to compute the remaining unspecified flow conditions. <br> <span style="color:blue">EXAMPLE</span>: An example of a well defined boundary condition using <code>bc_input</code>: <br> <span class="math inline">\(\bullet\)</span> <code>bc_input(1)%name = inflow_subsonic</code> <br> <span class="math inline">\(\bullet\)</span> <code>bc_input(1)%bc_type_string = SubInflow ! Subsonic Inflow BC</code> <br> <span class="math inline">\(\bullet\)</span> <code>bc_input(1)%p_static = 101325.0</code> <br> <span class="math inline">\(\bullet\)</span> <code>bc_input(1)%p_total = 121286.025</code> <br> <span class="math inline">\(\bullet\)</span> <code>bc_input(1)%t_total = 293.15</code> <br> <span style="color:blue">NOTE</span>: You must specify all BCs which should be consistent with those in the grid file.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%name</code></td>
+<td align="center"><code>character(len=32)</code></td>
+<td align="center"><code>&quot;&quot;</code></td>
+<td align="center">\</td>
+<td align="left">Character string that matches the name of a boundary group in the grid file. <br> <span style="color:blue">NOTE</span>: Case (upper/lower-case) does NOT matter.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%bc_type_string</code></td>
+<td align="center"><code>character(len=32)</code></td>
+<td align="center"><code>&quot;&quot;</code></td>
+<td align="center">\</td>
+<td align="left">The boundary conditions are specified in the grid file and the array <code>bface(1,:)</code> is updated accordingly. BC by this <code>bc_type_string</code> must be consistent with the grid BC. Because <code>bc_input</code> is used to set up <code>bc_in</code>. One of the usages of <code>bc_in</code> is to provide the flow condition for a BC. <br> Valid values for boundary condition types are: <br> <span class="math inline">\(\bullet\)</span> Subsonic inflow : <code>SubInflow</code> <br> <span class="math inline">\(\bullet\)</span> No-slip adiabatic wall : <code>AdiabaticWall</code> <br> <span class="math inline">\(\bullet\)</span> Slip wall : <code>SlipWall</code></td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%p_static</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Static pressure (units of Pa).</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%t_static</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Static temperature (units of Kelvin).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%rho_static</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Static density (units of <span class="math inline">\(kg/m^3\)</span>)</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%mach</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.4</code></td>
+<td align="center">\</td>
+<td align="left">Mach number. (dimensionless)</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%vx</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Velocity in the x coordinate direction (units of m/s)</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%vy</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Velocity in the y coordinate direction (units of m/s)</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%vz</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Velocity in the z coordinate direction (units of m/s)</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%p_total</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Total pressure (units of Pa).</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%t_total</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Total temperature (units of Kelvin).</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%rho_total</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Total density (units of <span class="math inline">\(kg/m^3\)</span>)</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%alpha_aoa</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Angle of attack in the <span class="math inline">\(x-y\)</span> plane. (dimensionless)</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>bc_input(1)%beta_aoa</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">Angle of attack in the <span class="math inline">\(x-z\)</span> plane. (dimensionless)</td>
+</tr>
+<tr class="even">
+<td align="center"><code>bc_input(1)%wall_temp</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-1.0</code></td>
+<td align="center">\</td>
+<td align="left">Temperature for isothermal wall (units of Kelvin).</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>walls_are_exact</code></td>
+<td align="center"><code>logical</code></td>
+<td align="center"><code>.TRUE.</code></td>
+<td align="center">\</td>
+<td align="left">Logical flag that determines if the solution on wall boundary conditions are treated as either the exact flow conditions or the ghost state that equals the exact flow conditions when averaged with the interior state. <br> <span class="math inline">\(\bullet\)</span> <code>.TRUE. :=</code> The wall boundary solution is the exact wall boundary condition, e.g., <span class="math inline">\([u_{wall}; v_{wall}; w_{wall}] = 0\)</span> for a no-slip wall. <br> <span class="math inline">\(\bullet\)</span> <code>.FALSE. :=</code> The average of the wall boundary solution and the interior solution on the boundary face recovers the exact wall boundary condition, e.g., <span class="math inline">\([u_{wall}; v_{wall}; w_{wall}] = − [u_{wall}; v_{wall}; w_{wall}]\)</span> for a no-slip wall. <br> <span style="color:blue">NOTE</span>: Hartmann (2014) reports that using exact wall boundary conditions seems to be more accurate on coarse grids and for lower values of solution order, whereas using the averaging method seems to be a little more stable. Details can be found at <code>http://elib.dlr.de/90967/1/hartmann_leicht_VKI_LS_2014-3.pdf</code></td>
+</tr>
+<tr class="even">
+<td align="center"><code>sub_inflow_method</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Specifies which subsonic inflow boundary condition algorithm to use. <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Hold the total pressure and total temperature constant at the inflow, use the outgoing characteristic from the interior to perform a Newton iteration to get the static temperature, speed of sound, and normal velocity magnitude for the exterior state. <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Use the inflow static density and velocity, and the interior static pressure. <br> <span class="math inline">\(\bullet\)</span> <code>3 :=</code> Hold the inflow total pressure and total temperature constant, and use the interior velocity. <br> <span class="math inline">\(\bullet\)</span> <code>4 :=</code> Hold the inflow total pressure and total temperature constant, and use the interior static pressure. <br> <span style="color:blue">NOTE</span>: It is highly recommended to use option 1.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="custom-profile"><span class="header-section-number">6.2</span> Custom Profile</h2>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>cpbc_prof_input</code></td>
+<td align="center"><code>cpbc_prof_input_t</code></td>
+<td align="center">\</td>
+<td align="center">\</td>
+<td align="left">Input file for the custom profile BC. The first line of the input file is a comment line starting with <code>!</code>.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>cpbc_prof_input%fname</code></td>
+<td align="center"><code>character(len=256)</code></td>
+<td align="center"><code>&quot;&quot;</code></td>
+<td align="center">\</td>
+<td align="left">File name of the input file for the custom profile BC.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>cpbc_prof_input%fdelim</code></td>
+<td align="center"><code>character</code></td>
+<td align="center"><code>,</code></td>
+<td align="center">\</td>
+<td align="left">Column delimiter in the input file for the custom profile BC.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>cpbc_prof_input%dat_dir</code></td>
+<td align="center"><code>character</code></td>
+<td align="center"><code>&quot;&quot;</code></td>
+<td align="center">\</td>
+<td align="left">The input profile is a 1D curve for each primitive variable. <code>dat_dir</code> indicates the direction along with the input profile is distributed. Valid values are <code>X</code> or <code>Y</code>. <code>Z</code> is always the spanwise direction in 3D. In 2D, there is no <code>Z</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="inflow-turbulence-generation"><span class="header-section-number">6.3</span> Inflow Turbulence Generation</h2>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input</code></td>
+<td align="center"><code>tgbc_bg_grid_input_t</code></td>
+<td align="center">\</td>
+<td align="center">\</td>
+<td align="left">Background mesh parameters for turbulence generation BC.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>tgbc_bg_grid_input%loc_str</code></td>
+<td align="center"><code>character</code></td>
+<td align="center"><code>&quot;&quot;</code></td>
+<td align="center">\</td>
+<td align="left">It indicates where the background mesh is located. <code>loc_str=X</code> indicates that the background mesh is located at a plane of <span class="math inline">\(x=const\)</span>, i.e. <span class="math inline">\(y-z\)</span> plane. Valid values are <code>X</code> or <code>Z</code>.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input%nx</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">The number of grid cells along the <span class="math inline">\(x\)</span> direction in the background mesh for the turbulence generation BC. If the background mesh is located on the <span class="math inline">\(y-z\)</span> plane, <code>nx</code> does not need to be specified and will not be used in the code.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>tgbc_bg_grid_input%ny</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">The number of grid cells along the <span class="math inline">\(y\)</span> direction in the background mesh for the turbulence generation BC.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input%nz</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">The number of grid cells along the <span class="math inline">\(z\)</span> direction in the background mesh for the turbulence generation BC. <span class="math inline">\(z\)</span> direction is assumed to be the spanwise direction in 3D simulation.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>tgbc_bg_grid_input%xl</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1E12</code></td>
+<td align="center">\</td>
+<td align="left">The lower bound of the domain of the background mesh along <span class="math inline">\(x\)</span> direction. If <code>loc_str=X</code>, <code>xl</code> and <code>xh</code> will be not used and do not need to be specified in the input file.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input%xh</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">The upper bound of the domain of the background mesh along <span class="math inline">\(x\)</span> direction.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>tgbc_bg_grid_input%yl</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1E12</code></td>
+<td align="center">\</td>
+<td align="left">The lower bound of the domain of the background mesh along <span class="math inline">\(y\)</span> direction.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input%yh</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">The upper bound of the domain of the background mesh along <span class="math inline">\(y\)</span> direction.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>tgbc_bg_grid_input%zl</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>1E12</code></td>
+<td align="center">\</td>
+<td align="left">The lower bound of the domain of the background mesh along <span class="math inline">\(z\)</span> direction. <span class="math inline">\(z\)</span> direction is the spanwise direction. In 3D, <code>zl</code> and <code>zh</code> are always required.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>tgbc_bg_grid_input%zh</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>0.0</code></td>
+<td align="center">\</td>
+<td align="left">The upper bound of the domain of the background mesh along <span class="math inline">\(z\)</span> direction.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="solution"><span class="header-section-number">7</span> Solution</h1>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="11%" />
+<col width="6%" />
+<col width="4%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Input Variable</th>
+<th align="center">Type</th>
+<th align="center">Default Value</th>
+<th align="center">Note</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>iter_out_interval</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>1</code></td>
+<td align="center">\</td>
+<td align="left">Number of time steps between writing time-stepping and residual/convergence statistics to standard output.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>results_interval</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">Number of time steps between writing residual/convergence statistics for all conserved and primitive variables to the file <code>results.dat</code>.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>output_interval</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>-5</code></td>
+<td align="center">\</td>
+<td align="left">Number of time steps between writing CGNS solution files.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>output_dir</code></td>
+<td align="center"><code>character(len=150)</code></td>
+<td align="center"><code>.</code></td>
+<td align="center">\</td>
+<td align="left">File path to the directory used for writing output files. <br> <span style="color:blue">NOTE</span>: If one is available, it is recommended that the output directory be located on a Lustre file system in order to get the best I/O performance possible.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>output_order</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>-3</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the degree of the polynomial space used to represent the solution in the CGNS solution files. This simply allows the ability to over-sample the solution polynomial which provides a smoother solution within each cells when visualizing the solution. <br> <span style="color:blue">NOTE</span>: This is only used if output order &gt; solution order.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>loc_output_pts</code></td>
+<td align="center"><code>integer</code></td>
+<td align="center"><code>0</code></td>
+<td align="center">\</td>
+<td align="left">Specifies the location of the nodal points within the grid cells when writing the solution to the CGNS solution files. <br> <span class="math inline">\(\bullet\)</span> <code>0 :=</code> Equi-distant nodes <br> <span class="math inline">\(\bullet\)</span> <code>1 :=</code> Legendre-Gauss nodes <br> <span class="math inline">\(\bullet\)</span> <code>2 :=</code> Legendre-Gauss-Lobatto nodes <br> <span style="color:blue">NOTE</span>: Using Legendre-Gauss nodes for the CGNS solution files will result in empty space between all grid cells because there is no connectivity information between cells.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>convergence_order_abs_res</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-16.0</code></td>
+<td align="center">\</td>
+<td align="left">This is the convergence goal for the orders of magnitude of the absolute residual.</td>
+</tr>
+<tr class="even">
+<td align="center"><code>convergence_order_max_res</code></td>
+<td align="center"><code>real</code></td>
+<td align="center"><code>-16.0</code></td>
+<td align="center">\</td>
+<td align="left">This is the convergence goal for the orders of magnitude reduction of the residual relative to the maximum value of the residual during the simulation.</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>output_time_averaging</code></td>
+<td align="center"><code>logical</code></td>
+<td align="center"><code>.FALSE.</code></td>
+<td align="center">\</td>
+<td align="left">Logical flag that enables/disables the accumulation of timeaveraged flow variables. If enabled, time-averaged restart and CGNS solution files will be written whenever the standard restart and CGNS solution files are written.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>

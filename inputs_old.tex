@@ -155,15 +155,12 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \groupline{GRID INFORMATION}
     %===========================================================================
-    grid\_format          & \typint & -1    & \slbsc &
+    grid\_format          & \typint & 1    & \slbsc &
     \begin{minipage}[t]{\linewidth}\begin{flushleft}
     Specifies the format of the input grid file.
     \begin{tabular}{ @{\qquad} r @{ = } p{0.85\linewidth} @{} }
-    -1 & Internally generated grid (automatically set for certain test cases) \\
-    1 & Gambit Neutral \\
-    2 & Gmsh \\
-    3 & Plot3D \\
-    4 & CGNS
+    1 & Gmsh \\
+    2 & CGNS
     \end{tabular}
     \end{flushleft}\end{minipage} \\ \minorline
     %---------------------------------------------------------------------------
@@ -172,69 +169,11 @@
     File path to the input grid file relative to the current directory.
     \descriptionend
     %---------------------------------------------------------------------------
-    plot3d\_cutfile       & \tc     & `` '' & \slbsc &
-    \descriptionbegin
-    File path to the input file that specifies the cut conditions for a
-    multiblock Plot3D grid file.
-    \descriptionend
-    %---------------------------------------------------------------------------
-    plot3d\_bcsfile       & \tc     & `` '' & \slbsc &
-    \descriptionbegin
-    File path to the input file that specifies the boundary conditions for a
-    Plot3D grid file.
-    \descriptionend
-    %---------------------------------------------------------------------------
     grid\_scaling\_factor & \typflt & 1.0   & \slbsc &
     \descriptionbegin
     Multiplication factor ($> 0.0$) to scale the grid coordinates to the
     desired length units. For example, use a value of 0.0254 to convert a grid
     containing coordinates in inches to meters.
-    \descriptionend
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \groupline{PLOT3D COARSENING OPTIONS}
-    %===========================================================================
-    plot3d\_i\_stride          & \typint & -1 & \sladv &
-    \descriptionbegin
-    If $> 0$, applies a coarsening stride to the \textit{\textbf{i}}-direction
-    of all Plot3D blocks. 
-    \NOTE This overrides the \textit{\textbf{i}}-direction coarsening
-    stride given by \textsl{plot3d\_all\_strides}.
-    \descriptionend
-    %---------------------------------------------------------------------------
-    plot3d\_j\_stride          & \typint & -1 & \sladv &
-    \descriptionbegin
-    If $> 0$, applies a coarsening stride to the \textit{\textbf{j}}-direction
-    of all Plot3D blocks. 
-    \NOTE This overrides the \textit{\textbf{j}}-direction coarsening
-    stride given by \textsl{plot3d\_all\_strides}.
-    \descriptionend
-    %---------------------------------------------------------------------------
-    plot3d\_k\_stride          & \typint & -1 & \sladv &
-    \descriptionbegin
-    If $> 0$, applies a coarsening stride to the \textit{\textbf{k}}-direction
-    of all Plot3D blocks. 
-    \NOTE This overrides the \textit{\textbf{k}}-direction coarsening
-    stride given by \textsl{plot3d\_all\_strides}.
-    \descriptionend
-    %---------------------------------------------------------------------------
-    plot3d\_all\_strides       & \typint & -1 & \sladv &
-    \descriptionbegin
-    Applies a coarsening stride to all \textit{\textbf{i}}, \textit{\textbf{j}},
-    \textit{\textbf{k}} directions of all Plot3D blocks. 
-    \NOTE The coarsening stride for any given direction can be
-    overridden by specifying the coarsening stride for that direction.
-    \descriptionend
-    %---------------------------------------------------------------------------
-    plot3d\_agglomerate\_order & \typint & -1 & \slbsc &
-    \descriptionbegin
-    If $> 0$, agglomerates linear Plot3D cells into high-order grid cells of
-    this order. 
-    \NOTE For all blocks, the number of cells in each direction must be
-    divisible by this order.
     \descriptionend
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -595,7 +534,8 @@
     global grid.
     \begin{tabular}{ @{\qquad} r @{ = } p{0.85\linewidth} @{} }
     1 & Create non-weighted partitions based on a multilevel recursive bisection
-    while minimizing the edge cut. \\
+    while minimizing the edge cut. For grids with origanized all quad or hex
+    cells, I recommend this option. \\
     2 & Create non-weighted partitions based on a multilevel $k$-way algorithm
     while minimizing the edge cut. \\
     3 & Create non-weighted partitions based on a multilevel $k$-way algorithm
@@ -612,18 +552,18 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \groupline{METHOD OF MANUFACTURED SOLUTIONS (MMS) OPTIONS}
     %===========================================================================
-    mms\_opt              & \typint & 0    & \slxtl &
+    mms\_opt              & \typint & 0    & \slnwk &
     \descriptionbegin
     Specifies the method of manufactured solutions (MMS) problem to use.
     \descriptionend
     %---------------------------------------------------------------------------
-    mms\_init             & \typflt & 0.1  & \slxtl &
+    mms\_init             & \typflt & 0.1  & \slnwk &
     \descriptionbegin
     Initializes the solution to $[\textsl{mms\_init} \times (\textrm{exact MMS
     solution})]$.
     \descriptionend
     %---------------------------------------------------------------------------
-    mms\_output\_solution & \typlog & \fls & \slxtl &
+    mms\_output\_solution & \typlog & \fls & \slnwk &
     \descriptionbegin
     Logical flag to completely skip the solver and just output the exact MMS
     solution.
@@ -635,32 +575,15 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \groupline{INITIALIZATION / TEST CASE}
     %===========================================================================
-    itestcase & \typint & 9 & \slbsc &
+    itestcase & \typint & 1 & \slbsc &
     \begin{minipage}[t]{\linewidth}\begin{flushleft}
     Specifies the test-case\slash problem to solve, primarily affecting the
     initialization of the simulation.
     \begin{tabular}{ @{\qquad} r @{ = } p{0.845\linewidth} @{} }
     1 & Generic flow, initialize to reference conditions. \\
-    2 & Channel flow (not working). \\
-    4 & Laminar subsonic boundary layer, initialize to
-        \newline reference conditions. \\
-    5 & Diagonally propagating Shu version of the isentropic
+    2 & Diagonally propagating Shu version of the isentropic
         \newline Euler vortex. \\
-    -5 & Stationary Shu version of the isentropic Euler vortex. \\
-    6 & Isentropic Euler vortex with propagation direction
-        \newline determined by \textsl{alpha\_aoaref}. \\
-    -6 & Isentropic Euler vortex propagating only in the
-        \newline $y$-direction. \\
-    7 & Advection of a density profile using the linear
-        \newline advection equation. \\
-    8 & Advection of an entropy profile using the linear
-        \newline advection equation. \\
-    9 & Taylor-Green vortex problem. \\
-    10 & Special initialization function for SMC000 nozzle
-         \newline jet case. \\
-    11 & Double Mach reflection (not working). \\
-    12 & Infinite cylinder. \\
-    13 & Freestream preservation
+    3 & Channel flow (not working).
     \end{tabular}
     \end{flushleft}\end{minipage} \\ \minorline
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1505,18 +1428,6 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \groupline{OPTION TO OUTPUT PLOT3D GRID TO TECPLOT IN UNSTRUCTURED FORMAT}
-    %===========================================================================
-    output\_plot3d\_to\_tecplot & \typlog & \fls & \slutl &
-    \descriptionbegin
-    Flag to output a Tecplot file of the input Plot3D grid file after reading
-    it.
-    \descriptionend
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \groupline{OPTION TO OUTPUT BOUNDARY CONDITIONS TO TECPLOT FILE}
     %===========================================================================
     output\_bface\_array & \typlog & \fls & \sldev &
@@ -1549,7 +1460,7 @@
     \newline \newline
     \begin{tabular}{ @{\qquad} l @{ = } l @{} }
     bc\_input(1)\%name & ``INFLOWSUBSONIC'' \\
-    bc\_input(1)\%set\_bc\_value & 2 ! Subsonic Inflow BC \\
+    bc\_input(1)\%bc\_type\_string & ``SubInflow'' ! Subsonic Inflow BC \\
     bc\_input(1)\%p\_static & 101325.0 \\
     bc\_input(1)\%p\_total & 121286.025 \\
     bc\_input(1)\%t\_total & 293.15
@@ -1563,28 +1474,15 @@
     \NOTE Case (upper\slash lower-case) does NOT matter.
     \descriptionend
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    bc\_input(1)\%set\_bc\_value & \typint & -9999 & \slbsc &
+    bc\_input(1)\%bc\_type\_string & \typint & `` '' & \slbsc &
     \begin{minipage}[t]{\linewidth}\begin{flushleft}
-    This overrides the boundary condition type specified in the grid file, using
-    this boundary condition type for the boundary group given by
+    The boundary condition is specified in the grid file. You copy all BC info
+    from the grid file to the input file. I know this is not a good way.
     \textsl{bc\_input(1)\%name}. Valid values for boundary condition types are:
     \begin{tabular}{ @{\qquad} r @{ = } p{0.845\linewidth} @{} }
-    1 & Generic inflow, subsonic or supersonic  \\
-    2 & Subsonic inflow \\
-    3 & Supersonic inflow \\
-    11 & Generic outflow, subsonic or supersonic \\
-    12 & subsonic outflow \\
-    13 & supersonic outflow \\
-    21 & Characteristic inflow\slash outflow based on
-         \newline incoming\slash outgoing Riemann invariants,
-         \newline can be subsonic or supersonic \\
-    22 & Generic inflow\slash outflow, subsonic or supersonic \\
-    23 & Fixed to freestream\slash reference flow conditions \\
-    24 & Fixed flow conditions (equivalent to supersonic inflow) \\
-    50 & Slip wall \\
-    52 & Adiabatic no-slip wall \\
-    53 & Isothermal no-slip wall \\
-    80 & Symmetry boundary condition (equivalent to slip wall)
+    SubInflow & Subsonic inflow\\
+    AdiabaticWall & No-slip adiabatic wall \\
+    SlipWall & Slip wall
     \end{tabular}
     \end{flushleft}\end{minipage} \\ \minorline
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1669,17 +1567,17 @@
     Time step to end relaxation ($> 0$)
     \descriptionend
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \groupline{OPTION TO INPUT CUSTOM PROFILE AS A BC}
+    %===========================================================================
+    cpbc\_prof\_input & \typlog & \fls & \sldev &
+    \descriptionbegin
+    
+    \descriptionend
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-   %Monday & 11C & 22C & A clear day with lots of sunshine.  
-   %However, the strong breeze will bring down the temperatures. \\ \hline
-   %Tuesday & 9C & 19C & Cloudy with rain, across many northern regions.
-   %Clear spells across most of Scotland and Northern Ireland, 
-   %but rain reaching the far northwest. \\ \hline
-   %Wednesday & 10C & 21C & Rain will still linger for the morning. 
-   %Conditions will improve by early afternoon and continue 
-   %throughout the evening. \\
     \hline
 %   \end{tabularx}
     \end{longtable}
