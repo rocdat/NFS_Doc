@@ -19,25 +19,17 @@
 <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
 <title>Input File Description</title>
 <style>
-<!-- table { -->
-  <!-- border-top: 2px solid #111; -->
-  <!-- border-bottom: 2px solid #111; -->
-  <!-- font-size: 1.1rem; -->
-<!-- } -->
 
-<!-- th { -->
-  <!-- border-bottom: 1px solid #111; -->
-<!-- } -->
-
-<!-- pre { -->
-  <!-- overflow-x: auto; -->
-  <!-- background-color: #fafafa; -->
-  <!-- padding: 1rem; -->
-  <!-- text-align: left; -->
-<!-- } -->
-<!-- code { -->
-  <!-- font-family: 'Share Tech Mono', monospace; -->
-<!-- } -->
+pre {
+  overflow-x: auto;
+  background-color: #fafafa;
+  padding: 1rem;
+  text-align: left;
+}
+code {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.05em;
+}
 
 p, footer, pre.code, div.table-wrapper {
     width: 100%;
@@ -73,6 +65,37 @@ ul {
 
 .column img {
   width: 100%;
+}
+
+table{
+  border: 2px solid #FFFFFF;
+  width: 92%;
+  text-align: center;
+}
+table td, table.greyGridTable th {
+  border: 1px solid #FFFFFF;
+  padding: 3px 4px;
+}
+table tbody td {
+}
+table tr:nth-child(even) {
+  background: #D0E4F5;
+}
+table thead {
+  background: #FFFFFF;
+  border-bottom: 4px solid #333333;
+}
+table thead th {
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  border-left: 2px solid #333333;
+}
+table thead th:first-child {
+  border-left: none;
+}
+
+table tfoot td {
 }
 
 </style>
